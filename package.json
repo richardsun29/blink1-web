@@ -1,0 +1,14 @@
+{
+  "name": "blink1-web",
+  "version": "1.0.0",
+  "description": "blink1-web",
+  "repository": "https://github.com/richardsun29/blink1-web",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pusher": "^2.1.3"
+  }
+}
