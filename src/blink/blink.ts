@@ -1,1 +1,1 @@
-console.log(1);
+import MessageReceiver from './message-receiver';

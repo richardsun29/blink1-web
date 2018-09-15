@@ -3,11 +3,14 @@ const nodeExternals = require('webpack-node-externals');
 module.exports = {
   mode: "development",
   devtool: "inline-source-map",
-  entry: "./src/server/server.ts",
+  entry: {
+    blink: "./src/blink/blink.ts",
+    server: "./src/server/server.ts",
+  },
   target: "node",
   externals: [nodeExternals()],
   output: {
-    filename: "server.js"
+    filename: "[name].js"
   },
   resolve: {
     extensions: [".ts", ".js"]
