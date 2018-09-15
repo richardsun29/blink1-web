@@ -1,4 +1,3 @@
-import Pusher = require('pusher-js');
 import Factory from '../util/factory';
 
 export default class MessageReceiver {

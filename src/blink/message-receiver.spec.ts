@@ -25,7 +25,7 @@ describe('MessageReceiver', function() {
     const eventName: string = 'test-event';
     const callback: Pusher.EventCallback = sinon.stub();
 
-    var messageReceiver = new MessageReceiver();
+    var messageReceiver: MessageReceiver = new MessageReceiver();
     messageReceiver.bind(eventName, callback);
 
     assert(mockChannel.bind.calledOnceWith(eventName, callback));
