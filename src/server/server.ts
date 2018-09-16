@@ -1,10 +1,12 @@
 import express from 'express';
 import path from 'path';
 
-import { PORT } from '../util/config';
+import Config from '../util/config';
+
+import MessageSender from './message-sender';
 
 const app: express.Application = express();
 
 app.use(express.static(path.join(__dirname, '../www')));
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+app.listen(Config.PORT, () => console.log(`Listening on ${ Config.PORT }`));

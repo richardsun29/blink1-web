@@ -1,6 +1,6 @@
 import MessageReceiver from './message-receiver';
 
 var m = new MessageReceiver();
-m.bind('myevent', function() {
-
+m.bind('my-event', (data) => {
+  console.log(data);
 });

@@ -1,12 +1,23 @@
-import pusher = require('pusher-js');
+import PusherClient from 'pusher-js';
+import PusherServer from 'pusher';
 
-import { PUSHER_KEY, PUSHER_CLUSTER } from '../util/config';
+import Config from '../util/config';
 
 export default class Factory {
   static createPusherClient(): Pusher.Pusher {
-    return new pusher(PUSHER_KEY, {
-      cluster: PUSHER_CLUSTER,
+    return new PusherClient(Config.PUSHER_KEY, {
+      cluster: Config.PUSHER_CLUSTER,
       encrypted: true,
+    });
+  }
+
+  static createPusherServer(): PusherServer {
+    return new PusherServer({
+      appId: Config.PUSHER_APPID,
+      key: Config.PUSHER_KEY,
+      secret: Config.PUSHER_SECRET,
+      encrypted: true,
+      cluster: Config.PUSHER_CLUSTER,
     });
   }
 };

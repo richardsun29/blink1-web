@@ -1,7 +1,7 @@
 import assert from 'assert';
-import sinon = require('sinon');
+import sinon from 'sinon';
 
-import pusher = require('pusher-js');
+import PusherClient from 'pusher-js';
 
 import Factory from '../util/factory';
 import MessageReceiver from './message-receiver';
@@ -13,7 +13,7 @@ describe('MessageReceiver', function() {
 
   beforeEach(function() {
     mockFactory = sinon.mock(Factory);
-    mockPusherClient = sinon.createStubInstance<Pusher.Pusher>(pusher);
+    mockPusherClient = sinon.createStubInstance<Pusher.Pusher>(PusherClient);
     mockChannel = {} as Pusher.Channel;
     mockPusherClient.connection = {} as Pusher.ConnectionManager;
 
@@ -24,13 +24,13 @@ describe('MessageReceiver', function() {
   });
 
   afterEach(function() {
-    sinon.restore();
+    sinon.verifyAndRestore();
   });
 
   it('should handle connection errors', function() {
     let messageReceiver: MessageReceiver = new MessageReceiver();
 
-    var connectionBindSpy: sinon.SinonSpy = mockPusherClient.connection.bind as sinon.SinonSpy;
+    let connectionBindSpy: sinon.SinonSpy = mockPusherClient.connection.bind as sinon.SinonSpy;
     assert(connectionBindSpy.calledOnceWith('error', sinon.match.any));
   });
 
@@ -43,5 +43,11 @@ describe('MessageReceiver', function() {
 
     let channelBindSpy: sinon.SinonSpy = mockChannel.bind as sinon.SinonSpy;
     assert(channelBindSpy.calledOnceWith(eventName, callback));
+  });
+
+  it('should disconnect', function() {
+    let messageReceiver: MessageReceiver = new MessageReceiver();
+    messageReceiver.disconnect();
+    assert(mockPusherClient.disconnect.calledOnce);
   });
 });

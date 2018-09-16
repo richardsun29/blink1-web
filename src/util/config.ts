@@ -1,9 +1,32 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-export const PUSHER_APPID: string = process.env.APPID || '';
-export const PUSHER_KEY: string = process.env.PUSHER_KEY || '';
-export const PUSHER_SECRET: string = process.env.PUSHER_SECRET || '';
-export const PUSHER_CLUSTER: string = process.env.PUSHER_CLUSTER || '';
+class ConfigNotSetError extends Error {}
 
-export const PORT: number = parseInt(process.env.PORT || '5000');
+export default class Config {
+  private static getRequiredConfig(name: string): string {
+    if (process.env[name]) {
+      return process.env[name] as string;
+    } else {
+      throw new ConfigNotSetError(name);
+    }
+  }
+
+  private static getOptionalConfig(name: string, defaultValue?: string): string {
+    try {
+      return this.getRequiredConfig(name);
+    } catch (e) {
+      if (e instanceof ConfigNotSetError && defaultValue) {
+        return defaultValue;
+      }
+      throw e;
+    }
+  }
+
+  static get PUSHER_APPID(): string { return this.getRequiredConfig('PUSHER_APPID') }
+  static get PUSHER_KEY(): string { return this.getRequiredConfig('PUSHER_KEY') }
+  static get PUSHER_SECRET(): string { return this.getRequiredConfig('PUSHER_SECRET') }
+  static get PUSHER_CLUSTER(): string { return this.getRequiredConfig('PUSHER_CLUSTER') }
+
+  static get PORT(): number { return parseInt(this.getOptionalConfig('PORT', '5000')) }
+}
