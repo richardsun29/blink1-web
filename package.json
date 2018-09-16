@@ -7,8 +7,10 @@
     "node": "8.11.4"
   },
   "scripts": {
-    "server": "node dist/server.js",
-    "blink": "node dist/blink.js",
+    "server": "ts-node src/server/server.ts",
+    "blink": "ts-node src/blink/blink.ts",
+    "server-prod": "node dist/server.js",
+    "blink-prod": "node dist/blink.js",
     "build": "webpack",
     "build-prod": "webpack --mode production",
     "test": "mocha -r ts-node/register 'src/**/*.spec.ts'"

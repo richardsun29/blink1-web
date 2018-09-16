@@ -1,33 +1,47 @@
 import assert from 'assert';
 import sinon = require('sinon');
 
-import Pusher = require('pusher-js');
+import pusher = require('pusher-js');
 
 import Factory from '../util/factory';
 import MessageReceiver from './message-receiver';
 
 describe('MessageReceiver', function() {
-  const mockFactory: sinon.SinonMock = sinon.mock(Factory);
-  const mockPusherClient: sinon.SinonStubbedInstance<Pusher.Pusher> =
-                          sinon.createStubInstance<Pusher.Pusher>(Pusher);
-  const mockChannel: { bind: sinon.SinonSpy } = {
-    bind: sinon.spy()
-  };
+  let mockFactory: sinon.SinonMock;
+  let mockPusherClient: sinon.SinonStubbedInstance<Pusher.Pusher>;
+  let mockChannel: Pusher.Channel;
+
+  beforeEach(function() {
+    mockFactory = sinon.mock(Factory);
+    mockPusherClient = sinon.createStubInstance<Pusher.Pusher>(pusher);
+    mockChannel = {} as Pusher.Channel;
+    mockPusherClient.connection = {} as Pusher.ConnectionManager;
+
+    mockFactory.expects('createPusherClient').once().returns(mockPusherClient);
+    mockPusherClient.subscribe.onFirstCall().returns(mockChannel);
+    mockChannel.bind = sinon.spy();
+    mockPusherClient.connection.bind = sinon.spy();
+  });
 
   afterEach(function() {
     sinon.restore();
   });
 
-  it('should bind to a channel', function() {
-    mockFactory.expects('createPusherClient').once().returns(mockPusherClient);
-    mockPusherClient.subscribe.onFirstCall().returns(mockChannel);
+  it('should handle connection errors', function() {
+    let messageReceiver: MessageReceiver = new MessageReceiver();
 
+    var connectionBindSpy: sinon.SinonSpy = mockPusherClient.connection.bind as sinon.SinonSpy;
+    assert(connectionBindSpy.calledOnceWith('error', sinon.match.any));
+  });
+
+  it('should bind to a channel event', function() {
     const eventName: string = 'test-event';
     const callback: Pusher.EventCallback = sinon.stub();
 
-    var messageReceiver: MessageReceiver = new MessageReceiver();
+    let messageReceiver: MessageReceiver = new MessageReceiver();
     messageReceiver.bind(eventName, callback);
 
-    assert(mockChannel.bind.calledOnceWith(eventName, callback));
+    let channelBindSpy: sinon.SinonSpy = mockChannel.bind as sinon.SinonSpy;
+    assert(channelBindSpy.calledOnceWith(eventName, callback));
   });
 });

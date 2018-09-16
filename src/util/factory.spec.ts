@@ -2,8 +2,6 @@ import assert from 'assert';
 import sinon = require('sinon');
 import proxyquire from 'proxyquire';
 
-import Pusher = require('pusher-js');
-
 describe('Factory', function() {
   afterEach(function() {
     sinon.restore();
@@ -21,7 +19,7 @@ describe('Factory', function() {
     '../util/config': config
     }).default;
 
-    var pusherClient: Pusher.Pusher = Factory.createPusherClient();
+    let pusherClient: Pusher.Pusher = Factory.createPusherClient();
 
     assert(spyPusher.calledOnceWith(config.PUSHER_KEY,
       sinon.match({ cluster: config.PUSHER_CLUSTER })
