@@ -1,50 +1,51 @@
 import assert from 'assert';
-import sinon from 'sinon';
 import proxyquire from 'proxyquire';
+import sinon from 'sinon';
 
-import Config from '../util/config';
 import PusherServer from 'pusher';
 
-describe('Factory', function() {
+import Config from '../util/config';
 
-  beforeEach(function() {
+describe('Factory', () => {
+
+  beforeEach(() => {
     sinon.replaceGetter(Config, 'PUSHER_APPID', () => 'test appid');
     sinon.replaceGetter(Config, 'PUSHER_KEY', () => 'test key');
     sinon.replaceGetter(Config, 'PUSHER_SECRET', () => 'test secret');
     sinon.replaceGetter(Config, 'PUSHER_CLUSTER', () => 'test cluster');
   });
 
-  afterEach(function() {
+  afterEach(() => {
     sinon.verifyAndRestore();
   });
 
-  it('should create a PusherClient with config', function() {
+  it('should create a PusherClient with config', () => {
     const spyPusherClient: sinon.SinonSpy = sinon.spy();
 
     const Factory = proxyquire('../util/factory', {
-      'pusher-js': spyPusherClient
+      'pusher-js': spyPusherClient,
     }).default;
 
-    let pusherClient: Pusher.Pusher = Factory.createPusherClient();
+    const pusherClient: Pusher.Pusher = Factory.createPusherClient();
 
-    var args = spyPusherClient.args[0];
+    const args = spyPusherClient.args[0];
     assert.strictEqual(Config.PUSHER_KEY, args[0]);
     assert.strictEqual(Config.PUSHER_CLUSTER, args[1].cluster);
 
     assert(spyPusherClient.calledOnceWith(Config.PUSHER_KEY,
-      sinon.match({ cluster: Config.PUSHER_CLUSTER })
+      sinon.match({ cluster: Config.PUSHER_CLUSTER }),
     ));
     assert(pusherClient instanceof spyPusherClient);
   });
 
-  it('should create a PusherServer with config', function() {
+  it('should create a PusherServer with config', () => {
     const spyPusherServer: sinon.SinonSpy = sinon.spy();
 
     const Factory = proxyquire('../util/factory', {
       'pusher': spyPusherServer,
     }).default;
 
-    let pusherServer: PusherServer = Factory.createPusherServer();
+    const pusherServer: PusherServer = Factory.createPusherServer();
 
     assert(spyPusherServer.calledOnceWith(sinon.match({
       cluster: Config.PUSHER_CLUSTER,

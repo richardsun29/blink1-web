@@ -1,5 +1,6 @@
-import Factory from '../util/factory';
 import PusherServer from 'pusher';
+
+import Factory from '../util/factory';
 
 export default class MessageSender {
   private pusherServer: PusherServer;
@@ -8,7 +9,7 @@ export default class MessageSender {
     this.pusherServer = Factory.createPusherServer();
   }
 
-  trigger(eventName: string, data: any): void {
+  public trigger(eventName: string, data: any): void {
     this.pusherServer.trigger('my-channel', eventName, data);
   }
 }

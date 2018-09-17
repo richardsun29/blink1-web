@@ -13,11 +13,11 @@ export default class MessageReceiver {
     });
   }
 
-  bind(eventName: string, callback: Pusher.EventCallback): void {
+  public bind(eventName: string, callback: Pusher.EventCallback): void {
     this.channel.bind(eventName, callback);
   }
 
-  disconnect(): void {
+  public disconnect(): void {
     this.pusher.disconnect();
   }
 }

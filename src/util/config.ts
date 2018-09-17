@@ -22,18 +22,18 @@ export default class Config {
       return this.getRequiredConfig(name);
     } catch (e) {
       // Typescript 2.1 breaking change: instanceof Error subclass doesn't work
-      //if (e instanceof ConfigNotSetError && defaultValue) {
-      if (e.name == 'ConfigNotSetError' && defaultValue) {
+      // if (e instanceof ConfigNotSetError && defaultValue) {
+      if (e.name === 'ConfigNotSetError' && defaultValue) {
         return defaultValue;
       }
       throw e;
     }
   }
 
-  static get PUSHER_APPID(): string { return this.getRequiredConfig('PUSHER_APPID') }
-  static get PUSHER_KEY(): string { return this.getRequiredConfig('PUSHER_KEY') }
-  static get PUSHER_SECRET(): string { return this.getRequiredConfig('PUSHER_SECRET') }
-  static get PUSHER_CLUSTER(): string { return this.getRequiredConfig('PUSHER_CLUSTER') }
+  static get PUSHER_APPID(): string { return this.getRequiredConfig('PUSHER_APPID'); }
+  static get PUSHER_KEY(): string { return this.getRequiredConfig('PUSHER_KEY'); }
+  static get PUSHER_SECRET(): string { return this.getRequiredConfig('PUSHER_SECRET'); }
+  static get PUSHER_CLUSTER(): string { return this.getRequiredConfig('PUSHER_CLUSTER'); }
 
-  static get PORT(): number { return parseInt(this.getOptionalConfig('PORT', '5000')) }
+  static get PORT(): number { return parseInt(this.getOptionalConfig('PORT', '5000')); }
 }
