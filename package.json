@@ -13,7 +13,8 @@
     "blink-prod": "node dist/blink.js",
     "build": "webpack",
     "build-prod": "webpack --mode production",
-    "test": "mocha -r ts-node/register 'src/**/*.spec.ts'"
+    "test": "mocha -r ts-node/register 'src/**/*.spec.ts'",
+    "debug": "mocha debug -r ts-node/register 'src/**/*.spec.ts'"
   },
   "author": "",
   "license": "ISC",

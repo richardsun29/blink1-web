@@ -1,7 +1,12 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-class ConfigNotSetError extends Error {}
+class ConfigNotSetError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ConfigNotSetError';
+  }
+}
 
 export default class Config {
   private static getRequiredConfig(name: string): string {
@@ -16,7 +21,9 @@ export default class Config {
     try {
       return this.getRequiredConfig(name);
     } catch (e) {
-      if (e instanceof ConfigNotSetError && defaultValue) {
+      // Typescript 2.1 breaking change: instanceof Error subclass doesn't work
+      //if (e instanceof ConfigNotSetError && defaultValue) {
+      if (e.name == 'ConfigNotSetError' && defaultValue) {
         return defaultValue;
       }
       throw e;
