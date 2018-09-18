@@ -1,6 +1,13 @@
-import MessageReceiver from './message-receiver';
+import Blink1 from 'node-blink1';
 
-const m = new MessageReceiver();
-m.bind('my-event', (data) => {
-  console.log(data);
-});
+export default class Blink {
+  private blink1: any;
+  constructor() {
+    this.blink1 = new Blink1();
+    console.log(Blink1.devices());
+    this.blink1.version(console.log);
+  }
+}
+
+// @ts-ignore
+const blink: Blink = new Blink();

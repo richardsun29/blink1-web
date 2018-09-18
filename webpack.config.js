@@ -4,7 +4,7 @@ module.exports = {
   mode: "development",
   devtool: "inline-source-map",
   entry: {
-    blink: "./src/blink/blink.ts",
+    blink: "./src/blink/index.ts",
     server: "./src/server/server.ts",
   },
   target: "node",

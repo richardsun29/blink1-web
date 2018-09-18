@@ -8,7 +8,7 @@
   },
   "scripts": {
     "server": "ts-node src/server/server.ts",
-    "blink": "ts-node src/blink/blink.ts",
+    "blink": "ts-node src/blink/index.ts",
     "server-prod": "node dist/server.js",
     "blink-prod": "node dist/blink.js",
     "build": "webpack",
