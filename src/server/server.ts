@@ -3,7 +3,7 @@ import path from 'path';
 
 import Config from '../util/config';
 
-import MessageSender from './message-sender';
+import MessageSender from '../util/message-sender';
 
 const app: express.Application = express();
 

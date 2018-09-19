@@ -1,4 +1,4 @@
-import Factory from '../util/factory';
+import Factory from './factory';
 
 export default class MessageReceiver {
   private pusher: Pusher.Pusher;

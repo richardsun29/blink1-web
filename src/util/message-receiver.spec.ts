@@ -3,7 +3,7 @@ import sinon from 'sinon';
 
 import PusherClient from 'pusher-js';
 
-import Factory from '../util/factory';
+import Factory from './factory';
 import MessageReceiver from './message-receiver';
 
 describe('MessageReceiver', () => {

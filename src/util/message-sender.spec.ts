@@ -3,7 +3,7 @@ import sinon from 'sinon';
 
 import PusherServer from 'pusher';
 
-import Factory from '../util/factory';
+import Factory from './factory';
 import MessageSender from './message-sender';
 
 describe('MessageSender', () => {

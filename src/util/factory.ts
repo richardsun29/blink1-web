@@ -2,6 +2,8 @@ import PusherServer from 'pusher';
 import PusherClient from 'pusher-js';
 
 import Config from '../util/config';
+import MessageReceiver from './message-receiver';
+import MessageSender from './message-sender';
 
 export default class Factory {
   public static createPusherClient(): Pusher.Pusher {
@@ -19,5 +21,13 @@ export default class Factory {
       encrypted: true,
       cluster: Config.PUSHER_CLUSTER,
     });
+  }
+
+  public static createMessageReceiver(): MessageReceiver {
+    return new MessageReceiver();
+  }
+
+  public static createMessageSender(): MessageSender {
+    return new MessageSender();
   }
 }

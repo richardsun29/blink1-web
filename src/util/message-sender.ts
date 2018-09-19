@@ -1,6 +1,6 @@
 import PusherServer from 'pusher';
 
-import Factory from '../util/factory';
+import Factory from './factory';
 
 export default class MessageSender {
   private pusherServer: PusherServer;
