@@ -7,6 +7,10 @@ export default class Blink {
     console.log(Blink1.devices());
     this.blink1.version(console.log);
   }
+
+  public onMessage(data: any): void {
+
+  }
 }
 
 // @ts-ignore

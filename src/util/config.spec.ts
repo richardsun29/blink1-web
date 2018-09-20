@@ -1,7 +1,7 @@
 import assert from 'assert';
 import sinon from 'sinon';
 
-import Config from '../util/config';
+import Config from './config';
 
 describe('Config', () => {
   afterEach(() => {

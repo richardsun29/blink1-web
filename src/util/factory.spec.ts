@@ -4,7 +4,7 @@ import sinon from 'sinon';
 
 import PusherServer from 'pusher';
 
-import Config from '../util/config';
+import Config from './config';
 
 describe('Factory', () => {
 
