@@ -105,7 +105,6 @@
     ],
     "space-before-function-paren": false,
     "space-within-parens": true,
-    "switch-final-break": true,
     "triple-equals": [
       true,
       "allow-null-check"

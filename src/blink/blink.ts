@@ -15,7 +15,7 @@ export default class Blink {
     try {
       this.blink1 = new Blink1();
     } catch (e) {
-      console.error(e);
+      console.error(e.message);
     }
   }
 
@@ -26,6 +26,7 @@ export default class Blink {
         break;
       case MessageType.BlinkSetColor:
         this.setColor((message as BlinkSetColorMessage).color);
+        break;
     }
   }
 
@@ -50,7 +51,7 @@ export default class Blink {
         this.blink1 = new Blink1();
         callback();
       } catch (err) {
-        console.error(err);
+        console.error(err.message);
       }
     }
   }
