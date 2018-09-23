@@ -79,7 +79,7 @@ describe('Blink', () => {
   describe('#setColor', () => {
     it('should run command', () => {
       stubBlink1Constructor.onFirstCall().returns(mockBlink1);
-      const color: Color = new Color({ r: 0, g: 126, b: 255 });
+      const color: any = { r: 0, g: 126, b: 255 };
 
       const blink: Blink = new BlinkTestee();
 
@@ -92,9 +92,7 @@ describe('Blink', () => {
       assert.equal(mockBlink1.fadeToRGB.callCount, 1);
 
       const args: any[] = mockBlink1.fadeToRGB.firstCall.args;
-      assert.equal(args[1], color.red());
-      assert.equal(args[2], color.green());
-      assert.equal(args[3], color.blue());
+      assert.deepStrictEqual(args.slice(1), [color.r, color.g, color.b]);
     });
   });
 });

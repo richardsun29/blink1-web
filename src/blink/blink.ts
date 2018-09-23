@@ -25,7 +25,7 @@ export default class Blink {
         this.off();
         break;
       case MessageType.BlinkSetColor:
-        this.setColor((message as BlinkSetColorMessage).color);
+        this.setColor(Color((message as BlinkSetColorMessage).color));
         break;
     }
   }

@@ -1,11 +1,13 @@
-import Color from 'color';
-
 export interface Message {
   type: MessageType;
 }
 
 export interface BlinkSetColorMessage extends Message {
-  color: Color;
+  color: {
+    r: number;
+    g: number;
+    b: number;
+  };
 }
 
 export enum MessageType {
