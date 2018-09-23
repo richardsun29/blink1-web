@@ -12,7 +12,7 @@ declare module 'node-blink1' {
       r: number,
       g: number,
       b: number,
-      index: 0 | 1 | 2,
+      index: Blink1.Index,
       callback?: Blink1.Callback,
     ): void;
 
@@ -34,7 +34,7 @@ declare module 'node-blink1' {
     off(callback?: Blink1.Callback): void;
 
     rgb(
-      index: 0 | 1 | 2,
+      index: Blink1.Index,
       callback: Blink1.RGBCallback,
     ): void;
 

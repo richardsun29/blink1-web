@@ -22,7 +22,7 @@ describe('Factory', () => {
   it('should create a PusherClient with config', () => {
     const spyPusherClient: sinon.SinonSpy = sinon.spy();
 
-    const Factory = proxyquire('../util/factory', {
+    const Factory = proxyquire('./factory', {
       'pusher-js': spyPusherClient,
     }).default;
 

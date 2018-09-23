@@ -21,6 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "color": "^3.0.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "node-blink1": "^0.2.3",
@@ -28,6 +29,7 @@
     "pusher-js": "^4.3.1"
   },
   "devDependencies": {
+    "@types/color": "^3.0.0",
     "@types/dotenv": "^4.0.3",
     "@types/express": "^4.16.0",
     "@types/mocha": "^5.2.5",
