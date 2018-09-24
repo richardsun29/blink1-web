@@ -15,6 +15,9 @@ function isValidColor(color: any): color is { r: number, g: number, b: number } 
   return _.every(color, (val: number) => _.inRange(val, 0, 255));
 }
 function isMessage(message: any): message is Message {
+  if (!_.isObjectLike(message)) {
+    return false;
+  }
   switch (message.type) {
     case MessageType.BlinkOff:
       return true;
@@ -28,6 +31,7 @@ function isMessage(message: any): message is Message {
 router.post('/blink', (req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (isMessage(req.body)) {
     messageSender.trigger('blink', req.body);
+    res.send();
   } else {
     res.status(400);
     res.send('Invalid message');

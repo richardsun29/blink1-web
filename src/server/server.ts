@@ -1,19 +1,15 @@
 import express from 'express';
-import path from 'path';
-
-import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import path from 'path';
 
 import Config from '../util/config';
 
 import api from './routes/api';
 
-import MessageSender from '../util/message-sender';
-
 const app: express.Application = express();
 
 app.use(morgan('dev'));
-app.use(bodyParser.json());
+app.use(express.json());
 
 // frontend
 app.use(express.static(path.join(__dirname, '../www')));
