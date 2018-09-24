@@ -6,6 +6,7 @@ import {
   Message,
   MessageType,
  } from '../types/message';
+ import Factory from '../util/factory';
 
 export default class Blink {
   // @ts-ignore
@@ -13,7 +14,7 @@ export default class Blink {
 
   constructor() {
     try {
-      this.blink1 = new Blink1();
+      this.blink1 = Factory.createBlink1();
     } catch (e) {
       console.error(e.message);
     }
@@ -48,7 +49,7 @@ export default class Blink {
       callback();
     } catch (e) {
       try {
-        this.blink1 = new Blink1();
+        this.blink1 = Factory.createBlink1();
         callback();
       } catch (err) {
         console.error(err.message);

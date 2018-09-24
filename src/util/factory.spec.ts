@@ -1,7 +1,8 @@
-import assert from 'assert';
+import { strict as assert } from 'assert';
 import proxyquire from 'proxyquire';
 import sinon from 'sinon';
 
+import Blink1 from 'node-blink1';
 import PusherServer from 'pusher';
 
 import Config from './config';
@@ -9,10 +10,6 @@ import Config from './config';
 describe('Factory', () => {
 
   beforeEach(() => {
-    sinon.replaceGetter(Config, 'PUSHER_APPID', () => 'test appid');
-    sinon.replaceGetter(Config, 'PUSHER_KEY', () => 'test key');
-    sinon.replaceGetter(Config, 'PUSHER_SECRET', () => 'test secret');
-    sinon.replaceGetter(Config, 'PUSHER_CLUSTER', () => 'test cluster');
   });
 
   afterEach(() => {
@@ -20,6 +17,8 @@ describe('Factory', () => {
   });
 
   it('should create a PusherClient with config', () => {
+    sinon.replaceGetter(Config, 'PUSHER_KEY', () => 'test key');
+    sinon.replaceGetter(Config, 'PUSHER_CLUSTER', () => 'test cluster');
     const spyPusherClient: sinon.SinonSpy = sinon.spy();
 
     const Factory = proxyquire('./factory', {
@@ -39,9 +38,13 @@ describe('Factory', () => {
   });
 
   it('should create a PusherServer with config', () => {
+    sinon.replaceGetter(Config, 'PUSHER_APPID', () => 'test appid');
+    sinon.replaceGetter(Config, 'PUSHER_KEY', () => 'test key');
+    sinon.replaceGetter(Config, 'PUSHER_SECRET', () => 'test secret');
+    sinon.replaceGetter(Config, 'PUSHER_CLUSTER', () => 'test cluster');
     const spyPusherServer: sinon.SinonSpy = sinon.spy();
 
-    const Factory = proxyquire('../util/factory', {
+    const Factory = proxyquire('./factory', {
       'pusher': spyPusherServer,
     }).default;
 
@@ -54,5 +57,18 @@ describe('Factory', () => {
       secret: Config.PUSHER_SECRET,
     })));
     assert(pusherServer instanceof spyPusherServer);
+  });
+
+  it('should create a Blink1', () => {
+    const spyBlink1: sinon.SinonSpy = sinon.spy();
+
+    const Factory = proxyquire('./factory', {
+      'node-blink1': spyBlink1,
+    }).default;
+
+    const blink1: Blink1 = Factory.createBlink1();
+
+    assert(spyBlink1.calledOnce);
+    assert(blink1 instanceof spyBlink1);
   });
 });
