@@ -19,7 +19,7 @@ describe('Blink', () => {
     sinon.stub(console, 'error');
 
     mockFactory = sinon.mock(Factory);
-    mockBlink1 = sinon.createStubInstance<Blink1>(Blink1);
+    mockBlink1 = sinon.createStubInstance(Blink1);
   });
 
   afterEach(() => {

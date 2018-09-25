@@ -3,9 +3,11 @@ const router: express.Router = express.Router();
 
 import _ from 'lodash';
 
+import Factory from '../../util/factory';
+
 import { Message, MessageType } from '../../types/message';
 import MessageSender from '../../util/message-sender';
-const messageSender: MessageSender = new MessageSender();
+const messageSender: MessageSender = Factory.createMessageSender();
 
 // validate format
 function isValidColor(color: any): color is { r: number, g: number, b: number } {

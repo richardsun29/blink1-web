@@ -11,7 +11,7 @@ class BlinkApp {
   }
 
   public run(): void {
-    this.messageReceiver.bind('blink', this.blink.processMessage);
+    this.messageReceiver.bind('blink', this.blink.processMessage.bind(this.blink));
   }
 }
 
