@@ -29,19 +29,11 @@ export default class Factory {
     return new Blink1();
   }
 
-  public static getMessageReceiver(): MessageReceiver {
-    if (!this.messageReceiverInstance) {
-      this.messageReceiverInstance = new MessageReceiver();
-    }
-    return this.messageReceiverInstance;
+  public static createMessageReceiver(): MessageReceiver {
+    return new MessageReceiver();
   }
-  private static messageReceiverInstance: MessageReceiver;
 
-  public static getMessageSender(): MessageSender {
-    if (!this.messageSenderInstance) {
-      this.messageSenderInstance = new MessageSender();
-    }
-    return this.messageSenderInstance;
+  public static createMessageSender(): MessageSender {
+    return new MessageSender();
   }
-  private static messageSenderInstance: MessageSender;
 }

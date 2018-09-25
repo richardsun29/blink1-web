@@ -3,12 +3,7 @@ import _proxyquire from 'proxyquire';
 const proxyquire = _proxyquire.noCallThru();
 import sinon from 'sinon';
 
-import Blink1 from 'node-blink1';
-import PusherServer from 'pusher';
-
 import Config from './config';
-import MessageReceiver from './message-receiver';
-import MessageSender from './message-sender';
 
 describe('Factory', () => {
 
@@ -61,7 +56,7 @@ describe('Factory', () => {
 
     const spy: sinon.SinonSpy = testCreateObject('pusher-js', 'createPusherClient');
 
-    const args = spy.args[0];
+    const args = spy.firstCall.args;
     assert.equal(Config.PUSHER_KEY, args[0]);
     assert.equal(Config.PUSHER_CLUSTER, args[1].cluster);
 
@@ -90,11 +85,11 @@ describe('Factory', () => {
     testCreateObject('node-blink1', 'createBlink1');
   });
 
-  it('should create a MessageReceiver singleton', () => {
-    testCreateSingleton('./message-receiver', 'getMessageReceiver');
+  it('should create a MessageReceiver', () => {
+    testCreateObject('./message-receiver', 'createMessageReceiver');
   });
 
-  it('should create a MessageSender singleton', () => {
-    testCreateSingleton('./message-sender', 'getMessageSender');
+  it('should create a MessageSender', () => {
+    testCreateObject('./message-sender', 'createMessageSender');
   });
 });
