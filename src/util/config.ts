@@ -34,10 +34,10 @@ export default class Config {
     }
   }
 
-  static get PUSHER_APPID(): string { return this.getRequiredConfig('PUSHER_APPID'); }
-  static get PUSHER_KEY(): string { return this.getRequiredConfig('PUSHER_KEY'); }
-  static get PUSHER_SECRET(): string { return this.getRequiredConfig('PUSHER_SECRET'); }
-  static get PUSHER_CLUSTER(): string { return this.getRequiredConfig('PUSHER_CLUSTER'); }
+  public static get PUSHER_APPID(): string { return this.getRequiredConfig('PUSHER_APPID'); }
+  public static get PUSHER_KEY(): string { return this.getRequiredConfig('PUSHER_KEY'); }
+  public static get PUSHER_SECRET(): string { return this.getRequiredConfig('PUSHER_SECRET'); }
+  public static get PUSHER_CLUSTER(): string { return this.getRequiredConfig('PUSHER_CLUSTER'); }
 
-  static get PORT(): number { return parseInt(this.getOptionalConfig('PORT', '5000')); }
+  public static get PORT(): number { return parseInt(this.getOptionalConfig('PORT', '5000')); }
 }
