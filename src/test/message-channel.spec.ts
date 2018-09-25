@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { strict as assert } from 'assert';
 import sinon from 'sinon';
 
 import Factory from '../util/factory';
@@ -33,7 +33,7 @@ describe('Message Channel', () => {
     setTimeout(() => {
       messageSender.trigger(eventName, data);
     }, 1000);
-  });
+  }).timeout(5000);
 
   it('should send messages for separate events', (done) => {
     const messageReceiver: MessageReceiver = Factory.createMessageReceiver();
@@ -74,6 +74,6 @@ describe('Message Channel', () => {
       messageSender.trigger(eventName1, data1);
       messageSender.trigger(eventName2, data2);
     }, 1000);
-  });
+  }).timeout(5000);
 
-}).timeout(5000);
+});

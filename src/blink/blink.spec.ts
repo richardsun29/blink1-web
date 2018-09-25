@@ -1,8 +1,6 @@
 import {strict as assert} from 'assert';
-import proxyquire from 'proxyquire';
 import sinon from 'sinon';
 
-import Color from 'color';
 import Blink1 from 'node-blink1';
 import {
   BlinkSetColorMessage,
