@@ -6,6 +6,7 @@ import Config from './config';
 import MessageReceiver from './message-receiver';
 import MessageSender from './message-sender';
 
+/* tslint:disable:member-ordering */
 export default class Factory {
   public static createPusherClient(): Pusher.Pusher {
     return new PusherClient(Config.PUSHER_KEY, {
@@ -28,11 +29,19 @@ export default class Factory {
     return new Blink1();
   }
 
-  public static createMessageReceiver(): MessageReceiver {
-    return new MessageReceiver();
+  public static getMessageReceiver(): MessageReceiver {
+    if (!this.messageReceiverInstance) {
+      this.messageReceiverInstance = new MessageReceiver();
+    }
+    return this.messageReceiverInstance;
   }
+  private static messageReceiverInstance: MessageReceiver;
 
-  public static createMessageSender(): MessageSender {
-    return new MessageSender();
+  public static getMessageSender(): MessageSender {
+    if (!this.messageSenderInstance) {
+      this.messageSenderInstance = new MessageSender();
+    }
+    return this.messageSenderInstance;
   }
+  private static messageSenderInstance: MessageSender;
 }
