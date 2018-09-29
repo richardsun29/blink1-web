@@ -1,8 +1,8 @@
 import {strict as assert} from 'assert';
 import sinon from 'sinon';
 
-import Color from 'color';
 import Blink1 from 'node-blink1';
+import tinycolor from 'tinycolor2';
 import {
   BlinkOffMessage,
   BlinkSetColorMessage,
@@ -78,9 +78,9 @@ describe('Blink', () => {
 
       assert(mockBlink1.fadeToRGB.calledOnce);
 
-      const color: Color = Color(message.color);
+      const color: tinycolor.ColorFormats.RGB = tinycolor(message.color).toRgb();
       const args: any[] = mockBlink1.fadeToRGB.firstCall.args;
-      assert.deepEqual(args.slice(1), [color.red(), color.green(), color.blue()]);
+      assert.deepEqual(args.slice(1), [color.r, color.g, color.b]);
     });
   });
 });

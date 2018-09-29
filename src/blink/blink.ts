@@ -1,4 +1,4 @@
-import Color from 'color';
+import tinycolor from 'tinycolor2';
 
 import Blink1 from 'node-blink1';
 import {
@@ -26,7 +26,7 @@ export default class Blink {
         this.off();
         break;
       case MessageType.BlinkSetColor:
-        this.setColor(Color((message as BlinkSetColorMessage).color));
+        this.setColor((message as BlinkSetColorMessage).color);
         break;
     }
   }
@@ -37,9 +37,10 @@ export default class Blink {
     });
   }
 
-  private setColor(color: Color): void {
+  private setColor(color: string): void {
+    const rgb: tinycolor.ColorFormats.RGB = tinycolor(color).toRgb();
     this.run(() => {
-      this.blink1.fadeToRGB(500, color.red(), color.green(), color.blue());
+      this.blink1.fadeToRGB(500, rgb.r, rgb.g, rgb.b);
     });
   }
 
