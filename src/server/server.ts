@@ -12,7 +12,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // frontend
-app.use(express.static(path.join(__dirname, '../www')));
+app.use(express.static(path.join('src', 'www')));
 
 // api
 app.use('/api', api);

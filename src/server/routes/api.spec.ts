@@ -2,8 +2,8 @@ import express from 'express';
 import request from 'supertest';
 
 import {
+  BlinkOffMessage,
   BlinkSetColorMessage,
-  Message,
   MessageType,
 } from '../../types/message';
 
@@ -48,7 +48,7 @@ describe('/api', () => {
       it('should fail gracefully with invalid message args', (done) => {
         const data: any = {
           type: MessageType.BlinkSetColor,
-          color: { r: 100, g: 200, b: -1 },
+          color: '#12345z',
         };
         request(app).post('/blink').send(data)
           .expect(400)
@@ -57,7 +57,7 @@ describe('/api', () => {
     });
 
     it('should succeed with BlinkOff message', (done) => {
-      const data: Message = {
+      const data: BlinkOffMessage = {
         type: MessageType.BlinkOff,
       };
       request(app).post('/blink').send(data)
@@ -68,7 +68,7 @@ describe('/api', () => {
     it('should succeed with BlinkSetColor message', (done) => {
       const data: BlinkSetColorMessage = {
         type: MessageType.BlinkSetColor,
-        color: { r: 0, g: 100, b: 200 },
+        color: '#aaff00',
       };
       request(app).post('/blink').send(data)
         .expect(200)

@@ -1,10 +1,11 @@
 import {strict as assert} from 'assert';
 import sinon from 'sinon';
 
+import Color from 'color';
 import Blink1 from 'node-blink1';
 import {
+  BlinkOffMessage,
   BlinkSetColorMessage,
-  Message,
   MessageType,
 } from '../types/message';
 import Factory from '../util/factory';
@@ -39,14 +40,14 @@ describe('Blink', () => {
   });
 
   describe('#off', () => {
+    const offMessage: BlinkOffMessage = { type: MessageType.BlinkOff };
+
     it('should run command', () => {
       mockFactory.expects('createBlink1').returns(mockBlink1);
 
       const blink: Blink = new Blink();
 
-      blink.processMessage({
-        type: MessageType.BlinkOff,
-      } as Message);
+      blink.processMessage(offMessage);
 
       assert(mockBlink1.off.calledOnce);
     });
@@ -57,9 +58,7 @@ describe('Blink', () => {
 
       const blink: Blink = new Blink();
 
-      blink.processMessage({
-        type: MessageType.BlinkOff,
-      } as Message);
+      blink.processMessage(offMessage);
 
       assert(mockBlink1.off.calledOnce);
     });
@@ -68,19 +67,20 @@ describe('Blink', () => {
   describe('#setColor', () => {
     it('should run command', () => {
       mockFactory.expects('createBlink1').returns(mockBlink1);
-      const color: any = { r: 0, g: 126, b: 255 };
-
       const blink: Blink = new Blink();
 
-      blink.processMessage({
+      const message: BlinkSetColorMessage = {
         type: MessageType.BlinkSetColor,
-        color,
-      } as BlinkSetColorMessage);
+        color: '#aaff00',
+      };
+
+      blink.processMessage(message);
 
       assert(mockBlink1.fadeToRGB.calledOnce);
 
+      const color: Color = Color(message.color);
       const args: any[] = mockBlink1.fadeToRGB.firstCall.args;
-      assert.deepEqual(args.slice(1), [color.r, color.g, color.b]);
+      assert.deepEqual(args.slice(1), [color.red(), color.green(), color.blue()]);
     });
   });
 });

@@ -10,11 +10,12 @@ import MessageSender from '../../util/message-sender';
 const messageSender: MessageSender = Factory.createMessageSender();
 
 // validate format
-function isValidColor(color: any): color is { r: number, g: number, b: number } {
-  if (!_.isObjectLike(color)) {
+function isValidColor(color: any): boolean {
+  if (!_.isString(color)) {
     return false;
   }
-  return _.every(color, (val: number) => _.inRange(val, 0, 255));
+  const colorRegex = /^#[0-9a-f]{6}$/i;
+  return colorRegex.test(color);
 }
 function isMessage(message: any): message is Message {
   if (!_.isObjectLike(message)) {
