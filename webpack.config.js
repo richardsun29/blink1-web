@@ -1,28 +1,31 @@
 const nodeExternals = require('webpack-node-externals');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const path = require('path');
 
 module.exports = {
   mode: "production",
-  devtool: "inline-source-map",
+  devtool: "source-map",
   plugins: [
     new CopyWebpackPlugin([
       {
         from: './src/www',
         to: 'www',
-        ignore: ['*.spec.ts', '*.spec.js']
+        ignore: ['*.ts']
       },
     ]),
+    new CleanWebpackPlugin(['dist']),
   ],
   entry: {
-    blink: "./src/blink/index.ts",
-    server: "./src/server/server.ts",
+    'blink.js': './src/blink/index.ts',
+    'server.js': './src/server/server.ts',
+    'www/js/bundle.js': './src/www/js/index.ts',
   },
   target: "node",
   externals: [nodeExternals()],
   output: {
-    filename: "[name].js",
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'),
+    filename: "[name]",
   },
   resolve: {
     extensions: [".ts", ".js"]

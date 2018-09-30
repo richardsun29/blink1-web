@@ -12,11 +12,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // frontend
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join('dist', 'www')));
-} else {
-  app.use(express.static(path.join('src', 'www')));
-}
+app.use(express.static(path.join('dist', 'www')));
 
 // api
 app.use('/api', api);
