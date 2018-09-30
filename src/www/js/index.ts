@@ -6,14 +6,15 @@ declare var tinycolor: typeof import('tinycolor2');
 import Api from './api-service';
 
 const onColorSelect = (color: tinycolor.Instance) => {
-  console.log(color);
-  Api.setColor(color);
+  Api.blinkSetColor(color);
 };
 
-$().ready(() => {
-  $('#color-picker').spectrum({
-    flat: true,
-    allowEmpty: true,
-    move: _.throttle(onColorSelect, 200),
+export function EntryPoint(): void {
+  $().ready(() => {
+    $('#color-picker').spectrum({
+      flat: true,
+      allowEmpty: true,
+      move: _.throttle(onColorSelect, 200),
+    });
   });
-});
+}

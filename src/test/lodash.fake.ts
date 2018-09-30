@@ -13,18 +13,20 @@ type LodashFakeMethods = {
   ]: sinon.SinonStub;
 };
 
-interface ILodashFake extends sinon.SinonStub, LodashFakeMethods { }
+export interface ILodashFake extends sinon.SinonStub, LodashFakeMethods { }
 
-// @ts-ignore
-const fake: ILodashFake = sinon.stub();
-
-for (const method of fakeMethods) {
+export function getFake_(): ILodashFake {
   // @ts-ignore
-  fake[method] = sinon.stub();
+  const fake: ILodashFake = sinon.stub();
+
+  for (const method of fakeMethods) {
+    // @ts-ignore
+    fake[method] = sinon.stub();
+  }
+
+  fake.returns(fake);
+
+  fake.throttle.callsFake((callback, ms) => callback);
+
+  return fake;
 }
-
-fake.returns(fake);
-
-fake.throttle.callsFake((callback, ms) => callback);
-
-export default fake;
