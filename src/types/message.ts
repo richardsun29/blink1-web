@@ -2,13 +2,19 @@ export interface Message {
   type: MessageType;
 }
 
-export interface BlinkOffMessage extends Message {
-  type: MessageType.BlinkOff;
+export class BlinkOffMessage implements Message {
+  public type = MessageType.BlinkOff;
+
+  constructor() { }
 }
 
-export interface BlinkSetColorMessage extends Message {
-  type: MessageType.BlinkSetColor;
-  color: string;
+export class BlinkSetColorMessage implements Message {
+  public type = MessageType.BlinkSetColor;
+  public color: string;
+
+  constructor(color: string) {
+    this.color = color;
+  }
 }
 
 export enum MessageType {

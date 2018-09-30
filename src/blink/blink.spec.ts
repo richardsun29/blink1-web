@@ -40,7 +40,7 @@ describe('Blink', () => {
   });
 
   describe('#off', () => {
-    const offMessage: BlinkOffMessage = { type: MessageType.BlinkOff };
+    const offMessage = new BlinkOffMessage();
 
     it('should run command', () => {
       mockFactory.expects('createBlink1').returns(mockBlink1);
@@ -69,10 +69,7 @@ describe('Blink', () => {
       mockFactory.expects('createBlink1').returns(mockBlink1);
       const blink: Blink = new Blink();
 
-      const message: BlinkSetColorMessage = {
-        type: MessageType.BlinkSetColor,
-        color: '#aaff00',
-      };
+      const message = new BlinkSetColorMessage('#aaff00');
 
       blink.processMessage(message);
 

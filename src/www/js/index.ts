@@ -1,7 +1,14 @@
 // tslint:disable:no-implicit-dependencies
-declare var _jquery: typeof import('jquery');
-declare var _lodash: typeof import('lodash');
-declare var _tinycolor: typeof import('tinycolor2');
+declare var jQuery: typeof import('jquery');
+declare var _: typeof import('lodash');
+declare var tinycolor: typeof import('tinycolor2');
+
+import Api from './api-service';
+
+const onColorSelect = (color: tinycolor.Instance) => {
+  console.log(color);
+  Api.setColor(color);
+};
 
 $().ready(() => {
   $('#color-picker').spectrum({
@@ -10,7 +17,3 @@ $().ready(() => {
     move: _.throttle(onColorSelect, 200),
   });
 });
-
-const onColorSelect = (color: tinycolor.Instance) => {
-  console.log(tinycolor);
-};

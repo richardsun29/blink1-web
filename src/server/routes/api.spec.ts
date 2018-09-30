@@ -57,19 +57,14 @@ describe('/api', () => {
     });
 
     it('should succeed with BlinkOff message', (done) => {
-      const data: BlinkOffMessage = {
-        type: MessageType.BlinkOff,
-      };
+      const data =  new BlinkOffMessage();
       request(app).post('/blink').send(data)
         .expect(200)
         .end(done);
     });
 
     it('should succeed with BlinkSetColor message', (done) => {
-      const data: BlinkSetColorMessage = {
-        type: MessageType.BlinkSetColor,
-        color: '#aaff00',
-      };
+      const data = new BlinkSetColorMessage('#aaff00');
       request(app).post('/blink').send(data)
         .expect(200)
         .end(done);
