@@ -29,11 +29,14 @@ describe('ApiService', () => {
       const color = tinycolor('#ff8800');
       ApiService.blinkSetColor(color);
 
-      assert.equal(fake$.post.callCount, 1);
+      assert.equal(fake$.ajax.callCount, 1);
 
-      const args = fake$.post.getCall(0).args;
-      assert.equal(args[0], '/api/blink');
-      const message = JSON.parse(args[1]);
+      const settings = fake$.ajax.getCall(0).args[0];
+      assert.equal(settings.url, '/api/blink');
+      assert.equal(settings.type, 'POST');
+      assert.equal(settings.contentType, 'application/json');
+
+      const message = JSON.parse(settings.data);
       assert(isValidMessage(message));
       assert.equal(message.type, MessageType.BlinkSetColor);
       assert(tinycolor.equals(color, tinycolor(message.color)));
@@ -44,11 +47,14 @@ describe('ApiService', () => {
     it('sends a POST request', () => {
       ApiService.blinkOff();
 
-      assert.equal(fake$.post.callCount, 1);
+      assert.equal(fake$.ajax.callCount, 1);
 
-      const args = fake$.post.getCall(0).args;
-      assert.equal(args[0], '/api/blink');
-      const message = JSON.parse(args[1]);
+      const settings = fake$.ajax.getCall(0).args[0];
+      assert.equal(settings.url, '/api/blink');
+      assert.equal(settings.type, 'POST');
+      assert.equal(settings.contentType, 'application/json');
+
+      const message = JSON.parse(settings.data);
       assert(isValidMessage(message));
       assert.equal(message.type, MessageType.BlinkOff);
     });

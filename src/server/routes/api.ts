@@ -13,6 +13,7 @@ import MessageSender from '../../util/message-sender';
 const messageSender: MessageSender = Factory.createMessageSender();
 
 router.post('/blink', (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.log(req.body);
   if (isValidMessage(req.body)) {
     messageSender.trigger('blink', req.body);
     res.send();

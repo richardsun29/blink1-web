@@ -4,14 +4,14 @@ import sinon from 'sinon';
 const fakeMethods: string[] = [
   'ready',
   'spectrum',
-  'post',
+  'ajax',
 ];
 
 type JQueryFakeMethods = {
   [method in
       'ready'
     | 'spectrum'
-    | 'post'
+    | 'ajax'
   ]: sinon.SinonStub;
 };
 
