@@ -24,5 +24,8 @@ describe('Config', () => {
   it('should return a default value when optional config not set', () => {
     sinon.replace(process.env, 'PORT', '');
     assert(Config.PORT);
+
+    sinon.replace(process.env, 'BLINK_TIMEOUT', '');
+    assert(Config.BLINK_TIMEOUT);
   });
 });

@@ -8,6 +8,7 @@ import {
   BlinkSetColorMessage,
   MessageType,
 } from '../types/message';
+import Config from '../util/config';
 import Factory from '../util/factory';
 
 import Blink from './blink';
@@ -16,8 +17,13 @@ describe('Blink', () => {
   let mockFactory: sinon.SinonMock;
   let mockBlink1: sinon.SinonStubbedInstance<Blink1>;
 
+  let blink: Blink;
+
   beforeEach(() => {
     sinon.stub(console, 'error');
+
+    // never time out
+    sinon.replaceGetter(Config, 'BLINK_TIMEOUT', () => Number.MAX_VALUE);
 
     mockFactory = sinon.mock(Factory);
     mockBlink1 = sinon.createStubInstance(Blink1);
@@ -25,17 +31,18 @@ describe('Blink', () => {
 
   afterEach(() => {
     sinon.verifyAndRestore();
+    blink.close();
   });
 
   describe('#constructor', () => {
     it('should connect to blink1', () => {
       mockFactory.expects('createBlink1').returns(mockBlink1);
-      const blink: Blink = new Blink();
+      blink = new Blink();
     });
 
     it('should handle blink1 error', () => {
       mockFactory.expects('createBlink1').throws();
-      assert.doesNotThrow(() => new Blink());
+      assert.doesNotThrow(() => blink = new Blink());
     });
   });
 
@@ -45,7 +52,7 @@ describe('Blink', () => {
     it('should run command', () => {
       mockFactory.expects('createBlink1').returns(mockBlink1);
 
-      const blink: Blink = new Blink();
+      blink = new Blink();
 
       blink.processMessage(offMessage);
 
@@ -56,7 +63,7 @@ describe('Blink', () => {
       mockFactory.expects('createBlink1').throws();
       mockFactory.expects('createBlink1').returns(mockBlink1);
 
-      const blink: Blink = new Blink();
+      blink = new Blink();
 
       blink.processMessage(offMessage);
 
@@ -67,7 +74,7 @@ describe('Blink', () => {
   describe('#setColor', () => {
     it('should run command', () => {
       mockFactory.expects('createBlink1').returns(mockBlink1);
-      const blink: Blink = new Blink();
+      blink = new Blink();
 
       const message = new BlinkSetColorMessage('#aaff00');
 

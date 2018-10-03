@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import tinycolor from 'tinycolor2';
 
 import Blink1 from 'node-blink1';
@@ -6,11 +7,10 @@ import {
   Message,
   MessageType,
  } from '../types/message';
+ import Config from '../util/config';
  import Factory from '../util/factory';
 
 export default class Blink {
-  // @ts-ignore
-  private blink1: Blink1;
 
   constructor() {
     try {
@@ -19,6 +19,15 @@ export default class Blink {
       console.error(e.message);
     }
   }
+  // @ts-ignore
+  private blink1: Blink1;
+
+  // turn off blink if no commands are sent
+  private handleTimeout = _.debounce(() => {
+    try {
+      this.blink1.off();
+    } catch (e) {}
+  }, Config.BLINK_TIMEOUT * 1000);
 
   public processMessage(message: Message): void {
     switch (message.type) {
@@ -29,6 +38,13 @@ export default class Blink {
         this.setColor((message as BlinkSetColorMessage).color);
         break;
     }
+  }
+
+  public close(): void {
+    this.handleTimeout.cancel();
+    try {
+      this.blink1.close();
+    } catch (e) {}
   }
 
   private off(): void {
@@ -56,5 +72,6 @@ export default class Blink {
         console.error(err.message);
       }
     }
+    this.handleTimeout();
   }
 }

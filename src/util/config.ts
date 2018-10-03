@@ -36,4 +36,6 @@ export default class Config {
   public static get PUSHER_CLUSTER(): string { return this.getRequiredConfig('PUSHER_CLUSTER'); }
 
   public static get PORT(): number { return parseInt(this.getOptionalConfig('PORT', '5000')); }
+
+  public static get BLINK_TIMEOUT(): number { return parseInt(this.getOptionalConfig('BLINK_TIMEOUT', '30')); }
 }
