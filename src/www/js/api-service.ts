@@ -16,6 +16,10 @@ export default class ApiService {
   }
 
   public static blinkSetColor(color: tinycolor.Instance): void {
+    if (!color) {
+      this.blinkOff();
+      return;
+    }
     const message = new BlinkSetColorMessage(color.toHexString());
     this.post(this.urls.blink, message);
   }

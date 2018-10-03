@@ -41,6 +41,22 @@ describe('ApiService', () => {
       assert.equal(message.type, MessageType.BlinkSetColor);
       assert(tinycolor.equals(color, tinycolor(message.color)));
     });
+
+    it('handles null color', () => {
+      // @ts-ignore
+      ApiService.blinkSetColor(null);
+
+      assert.equal(fake$.ajax.callCount, 1);
+
+      const settings = fake$.ajax.getCall(0).args[0];
+      assert.equal(settings.url, '/api/blink');
+      assert.equal(settings.type, 'POST');
+      assert.equal(settings.contentType, 'application/json');
+
+      const message = JSON.parse(settings.data);
+      assert(isValidMessage(message));
+      assert.equal(message.type, MessageType.BlinkOff);
+    });
   });
 
   describe('#blinkOff', () => {
