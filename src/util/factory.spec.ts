@@ -23,7 +23,7 @@ describe('Factory', () => {
 
     const obj = Factory[method]();
 
-    assert.equal(spy.callCount, 1);
+    assert.strictEqual(spy.callCount, 1);
     assert(obj instanceof spy);
 
     return spy;
@@ -38,14 +38,14 @@ describe('Factory', () => {
 
     const obj = Factory[method]();
 
-    assert.equal(spy.callCount, 1);
+    assert.strictEqual(spy.callCount, 1);
     assert(obj instanceof spy);
 
     const obj2 = Factory[method]();
 
-    assert.equal(spy.callCount, 1);
+    assert.strictEqual(spy.callCount, 1);
     assert(obj2 instanceof spy);
-    assert.equal(obj, obj2);
+    assert.strictEqual(obj, obj2);
 
     return spy;
   }
@@ -57,8 +57,8 @@ describe('Factory', () => {
     const spy: sinon.SinonSpy = testCreateObject('pusher-js', 'createPusherClient');
 
     const args = spy.firstCall.args;
-    assert.equal(Config.PUSHER_KEY, args[0]);
-    assert.equal(Config.PUSHER_CLUSTER, args[1].cluster);
+    assert.strictEqual(Config.PUSHER_KEY, args[0]);
+    assert.strictEqual(Config.PUSHER_CLUSTER, args[1].cluster);
 
     assert(spy.calledOnceWith(Config.PUSHER_KEY,
       sinon.match({ cluster: Config.PUSHER_CLUSTER }),

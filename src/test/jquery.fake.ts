@@ -26,9 +26,12 @@ export function getFake$(): IJQueryFake {
     fake[method] = sinon.stub();
   }
 
-  fake.returns(fake);
-
-  fake.ready.callsFake((callback) => callback());
+  fake.callsFake((callback) => {
+    if (typeof callback === 'function') {
+      callback();
+    }
+    return fake;
+  });
 
   return fake;
 }

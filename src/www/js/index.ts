@@ -27,7 +27,7 @@ const spectrumOptions: Spectrum.Options = {
 };
 
 export function EntryPoint(): void {
-  $().ready(() => {
+  $(() => {
     $('#color-picker').spectrum({
       ...spectrumOptions,
       move: _.throttle(onColorSelect, 200),

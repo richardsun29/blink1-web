@@ -77,7 +77,7 @@ describe('Blink', () => {
 
       const color: tinycolor.ColorFormats.RGB = tinycolor(message.color).toRgb();
       const args: any[] = mockBlink1.fadeToRGB.firstCall.args;
-      assert.deepEqual(args.slice(1), [color.r, color.g, color.b]);
+      assert.deepStrictEqual(args.slice(1), [color.r, color.g, color.b]);
     });
   });
 });

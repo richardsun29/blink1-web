@@ -29,16 +29,16 @@ describe('ApiService', () => {
       const color = tinycolor('#ff8800');
       ApiService.blinkSetColor(color);
 
-      assert.equal(fake$.ajax.callCount, 1);
+      assert.strictEqual(fake$.ajax.callCount, 1);
 
       const settings = fake$.ajax.getCall(0).args[0];
-      assert.equal(settings.url, '/api/blink');
-      assert.equal(settings.type, 'POST');
-      assert.equal(settings.contentType, 'application/json');
+      assert.strictEqual(settings.url, '/api/blink');
+      assert.strictEqual(settings.type, 'POST');
+      assert.strictEqual(settings.contentType, 'application/json');
 
       const message = JSON.parse(settings.data);
       assert(isValidMessage(message));
-      assert.equal(message.type, MessageType.BlinkSetColor);
+      assert.strictEqual(message.type, MessageType.BlinkSetColor);
       assert(tinycolor.equals(color, tinycolor(message.color)));
     });
 
@@ -46,16 +46,16 @@ describe('ApiService', () => {
       // @ts-ignore
       ApiService.blinkSetColor(null);
 
-      assert.equal(fake$.ajax.callCount, 1);
+      assert.strictEqual(fake$.ajax.callCount, 1);
 
       const settings = fake$.ajax.getCall(0).args[0];
-      assert.equal(settings.url, '/api/blink');
-      assert.equal(settings.type, 'POST');
-      assert.equal(settings.contentType, 'application/json');
+      assert.strictEqual(settings.url, '/api/blink');
+      assert.strictEqual(settings.type, 'POST');
+      assert.strictEqual(settings.contentType, 'application/json');
 
       const message = JSON.parse(settings.data);
       assert(isValidMessage(message));
-      assert.equal(message.type, MessageType.BlinkOff);
+      assert.strictEqual(message.type, MessageType.BlinkOff);
     });
   });
 
@@ -63,16 +63,16 @@ describe('ApiService', () => {
     it('sends a POST request', () => {
       ApiService.blinkOff();
 
-      assert.equal(fake$.ajax.callCount, 1);
+      assert.strictEqual(fake$.ajax.callCount, 1);
 
       const settings = fake$.ajax.getCall(0).args[0];
-      assert.equal(settings.url, '/api/blink');
-      assert.equal(settings.type, 'POST');
-      assert.equal(settings.contentType, 'application/json');
+      assert.strictEqual(settings.url, '/api/blink');
+      assert.strictEqual(settings.type, 'POST');
+      assert.strictEqual(settings.contentType, 'application/json');
 
       const message = JSON.parse(settings.data);
       assert(isValidMessage(message));
-      assert.equal(message.type, MessageType.BlinkOff);
+      assert.strictEqual(message.type, MessageType.BlinkOff);
     });
   });
 });

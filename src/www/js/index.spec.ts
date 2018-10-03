@@ -28,8 +28,8 @@ describe('www', () => {
 
   it('should run on document ready', () => {
     index.EntryPoint();
-    assert.deepEqual(fake$.getCall(0).args, []);
-    assert.equal(fake$.ready.callCount, 1);
+    assert.strictEqual(fake$.getCall(0).args.length, 1);
+    assert.strictEqual(typeof fake$.getCall(0).args[0], 'function');
   });
 
   describe('#onColorSelect', () => {

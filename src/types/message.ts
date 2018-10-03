@@ -1,5 +1,10 @@
 import _ from 'lodash';
 
+export enum MessageType {
+  BlinkOff,
+  BlinkSetColor,
+}
+
 export interface Message {
   type: MessageType;
 }
@@ -17,11 +22,6 @@ export class BlinkSetColorMessage implements Message {
   constructor(color: string) {
     this.color = color;
   }
-}
-
-export enum MessageType {
-  BlinkOff,
-  BlinkSetColor,
 }
 
 // validate format
