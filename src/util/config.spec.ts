@@ -15,6 +15,11 @@ describe('Config', () => {
     assert(Config.PUSHER_CLUSTER);
   });
 
+  it('should have all required config for the server', () => {
+    assert(Config.PASSWORD_HASH);
+    assert(Config.JWT_SECRET);
+  });
+
   it('should throw when required config not set', () => {
     sinon.replace(process.env, 'PUSHER_APPID', '');
 
