@@ -1,3 +1,4 @@
+import Config from './config';
 import Factory from './factory';
 
 export default class MessageReceiver {
@@ -6,7 +7,7 @@ export default class MessageReceiver {
 
   constructor() {
     this.pusher = Factory.createPusherClient();
-    this.channel = this.pusher.subscribe('my-channel');
+    this.channel = this.pusher.subscribe(Config.PUSHER_BLINK_CHANNEL);
 
     this.pusher.connection.bind('error', (err) => {
       console.error('Pusher: connection error', err);

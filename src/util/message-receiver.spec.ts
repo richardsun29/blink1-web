@@ -3,6 +3,7 @@ import sinon from 'sinon';
 
 import PusherClient from 'pusher-js';
 
+import Config from './config';
 import Factory from './factory';
 import MessageReceiver from './message-receiver';
 
@@ -11,7 +12,11 @@ describe('MessageReceiver', () => {
   let mockPusherClient: sinon.SinonStubbedInstance<Pusher.Pusher>;
   let mockChannel: Pusher.Channel;
 
+  const testChannel: string = 'test channel';
+
   beforeEach(() => {
+    sinon.replaceGetter(Config, 'PUSHER_BLINK_CHANNEL', () => testChannel);
+
     mockFactory = sinon.mock(Factory);
     mockPusherClient = sinon.createStubInstance<Pusher.Pusher>(PusherClient);
     mockChannel = {} as Pusher.Channel;
@@ -25,6 +30,13 @@ describe('MessageReceiver', () => {
 
   afterEach(() => {
     sinon.verifyAndRestore();
+  });
+
+  it('should get channel name from config', () => {
+    const messageReceiver: MessageReceiver = new MessageReceiver();
+    messageReceiver.disconnect();
+
+    assert(mockPusherClient.subscribe.calledOnceWithExactly(testChannel));
   });
 
   it('should handle connection errors', () => {
