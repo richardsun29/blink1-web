@@ -35,4 +35,64 @@ describe('MessageSender', () => {
 
     assert(mockPusherServer.trigger.calledWith(testChannel, eventName, data));
   });
+
+  describe('#subscriberConnected', () => {
+    it('should pass connection state to callback', (done) => {
+      const err = undefined;
+      const req = {};
+      const res = {
+        statusCode: 200,
+        body: JSON.stringify({ occupied: true }),
+      };
+
+      mockPusherServer.get.callsFake((config, callback) => {
+        assert.strictEqual(config.path, `/channels/${testChannel}`);
+        callback(err, req, res);
+      });
+
+      const messageSender: MessageSender = new MessageSender();
+      messageSender.subscriberConnected((isConnected) => {
+        assert.strictEqual(isConnected, true);
+        assert.strictEqual(mockPusherServer.get.callCount, 1);
+        done();
+      });
+    });
+
+    it('should handle generic errors', (done) => {
+      const err = new Error();
+      const req = undefined;
+      const res = undefined;
+
+      mockPusherServer.get.callsFake((config, callback) => {
+        assert.strictEqual(config.path, `/channels/${testChannel}`);
+        callback(err, req, res);
+      });
+
+      const messageSender: MessageSender = new MessageSender();
+      messageSender.subscriberConnected((isConnected) => {
+        assert.strictEqual(isConnected, false);
+        assert.strictEqual(mockPusherServer.get.callCount, 1);
+        done();
+      });
+    });
+
+    it('should handle HTTP errors', (done) => {
+      const err = new Error();
+      const req = {};
+      const res = { statusCode: 500 };
+
+      mockPusherServer.get.callsFake((config, callback) => {
+        assert.strictEqual(config.path, `/channels/${testChannel}`);
+        callback(err, req, res);
+      });
+
+      const messageSender: MessageSender = new MessageSender();
+      messageSender.subscriberConnected((isConnected) => {
+        assert.strictEqual(isConnected, false);
+        assert.strictEqual(mockPusherServer.get.callCount, 1);
+        done();
+      });
+    });
+
+  });
 });

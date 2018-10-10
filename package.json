@@ -12,7 +12,7 @@
     "build": "webpack",
     "watch": "webpack --watch",
     "unit": "mocha -r ts-node/register 'src/**/*.spec.*' --exclude 'src/test/*'",
-    "test": "NODE_ENV=test mocha -r ts-node/register 'src/**/*.spec.*'",
+    "test": "mocha -r ts-node/register 'src/**/*.spec.*'",
     "debug": "mocha debug -r ts-node/register 'src/**/*.spec.*'",
     "tslint": "tslint --project ."
   },
