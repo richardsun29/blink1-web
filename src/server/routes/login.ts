@@ -22,18 +22,7 @@ const loginPage: string = `
 </html>
 `;
 
-router.get('/', (req, res, next) => {
-  const token = req.cookies.jwt;
-  jwt.verify(token, Config.JWT_SECRET, (err: any, decoded: any) => {
-    if (err) {
-      res.status(403);
-      res.send(loginPage);
-    } else {
-      next();
-    }
-  });
-});
-
+// handle login attempts before checking jwt
 router.post('/', express.urlencoded({ extended: true }), (req, res, next) => {
   if (!req.body.password) {
     res.status(400);
@@ -49,6 +38,19 @@ router.post('/', express.urlencoded({ extended: true }), (req, res, next) => {
     } else {
       res.status(403);
       res.send(loginPage);
+    }
+  });
+});
+
+// check jwt
+router.all('*', (req, res, next) => {
+  const token = req.cookies.jwt;
+  jwt.verify(token, Config.JWT_SECRET, (err: any, decoded: any) => {
+    if (err) {
+      res.status(403);
+      res.send(loginPage);
+    } else {
+      next();
     }
   });
 });
