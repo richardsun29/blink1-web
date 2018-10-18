@@ -1,0 +1,83 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  text-align: center;
+  background-image: radial-gradient(circle farthest-corner at 50% 70%, transparent, black);
+  background-color: black;
+  transition: background-color 0.5s;
+}
+
+@media (orientation: landscape) {
+    body {
+        flex-direction: row;
+        background-image: radial-gradient(circle farthest-corner at 70% 50%, transparent, black);
+    }
+}
+
+.spectrum-container {
+  background: #0008;
+  border-color: #666;
+}
+
+.sp-palette {
+    max-width: unset;
+}
+
+.sp-palette .sp-thumb-el {
+    width: 6vmin;
+    height: 6vmin;
+}
+
+.blink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.blink::before {
+    content: ' ';
+}
+
+.light {
+  position: relative;
+  z-index: 10;
+  height: 40vmin;
+  width: 25vmin;
+  border: 0.3vmin solid #888;
+  border-radius: 7vmin;
+  box-shadow: 0.5vmin 0 2vmin;
+  background-image: linear-gradient(#fff6, transparent 20%, transparent 80%, #0004);
+  background-color: #000;
+  transition: background-color 0.5s;
+}
+
+.usb {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  z-index: 1;
+  top: -2vmin;
+  width: 15vmin;
+  height: 18vmin;
+  box-shadow: 0.5vmin 0.5vmin 2vmin;
+  background-color: #999;
+}
+
+.usb-hole {
+  position: relative;
+  z-index: 2;
+  height: 2vmin;
+  width: 2vmin;
+  background-color: #444;
+}
