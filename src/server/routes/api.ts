@@ -10,10 +10,13 @@ import {
 } from '../../types/message';
 
 import MessageSender from '../../util/message-sender';
-const messageSender: MessageSender = Factory.createMessageSender();
+let messageSender: MessageSender | null = null;
 
 router.post('/blink', (req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (isValidMessage(req.body)) {
+    if (!messageSender) {
+      messageSender = Factory.createMessageSender();
+    }
     messageSender.trigger('blink', req.body);
     res.send();
   } else {
