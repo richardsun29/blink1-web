@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { CookieOptions } from 'express';
 const router: express.Router = express.Router();
 
 import bcrypt from 'bcrypt';
@@ -33,7 +33,10 @@ router.post('/', express.urlencoded({ extended: true }), (req, res, next) => {
   bcrypt.compare(req.body.password, Config.PASSWORD_HASH, (err, same) => {
     if (same) {
       const token = jwt.sign({}, Config.JWT_SECRET);
-      res.cookie('jwt', token);
+      const cookieOptions: CookieOptions = {
+        maxAge: 100 * 24 * 60 * 60 * 1000, // 100 years
+      };
+      res.cookie('jwt', token, cookieOptions);
       res.redirect('/');
     } else {
       res.status(403);

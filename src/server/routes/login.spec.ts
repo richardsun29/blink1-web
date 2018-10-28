@@ -117,6 +117,25 @@ describe('Login', () => {
             .end(checkResponse(Page.Main, done));
         });
     });
+
+    it('should set a cookie', (done) => {
+      request(app).post('/')
+        .send({ password })
+        .end((err, res) => {
+          if (err) {
+            done(err);
+          }
+
+          const cookie: string = res.header['set-cookie'][0];
+
+          assert.strictEqual(cookie.indexOf('jwt='), 0);
+
+          // don't use transient cookie
+          assert.notStrictEqual(cookie.indexOf('Expires='), -1);
+
+          done();
+        });
+    });
   });
 
   describe('/api', () => {
