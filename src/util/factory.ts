@@ -12,6 +12,7 @@ export default class Factory {
     return new PusherClient(Config.PUSHER_KEY, {
       cluster: Config.PUSHER_CLUSTER,
       encrypted: true,
+      // activityTimeout: 60 * 1000,
     });
   }
 
