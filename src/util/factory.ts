@@ -20,7 +20,7 @@ export default class Factory {
       appId: Config.PUSHER_APPID,
       key: Config.PUSHER_KEY,
       secret: Config.PUSHER_SECRET,
-      encrypted: true,
+      useTLS: true,
       cluster: Config.PUSHER_CLUSTER,
     });
   }
