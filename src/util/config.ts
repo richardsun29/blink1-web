@@ -34,7 +34,7 @@ export default class Config {
   public static get PUSHER_KEY(): string { return this.getRequiredConfig('PUSHER_KEY'); }
   public static get PUSHER_SECRET(): string { return this.getRequiredConfig('PUSHER_SECRET'); }
   public static get PUSHER_CLUSTER(): string { return this.getRequiredConfig('PUSHER_CLUSTER'); }
-  public static get PUSHER_BLINK_CHANNEL(): string { return 'blink'; }
+  public static get PUSHER_BLINK_CHANNEL(): string { return this.getOptionalConfig('PUSHER_CHANNEL', 'blink'); }
 
   public static get PORT(): number { return parseInt(this.getOptionalConfig('PORT', '5000')); }
   public static get PASSWORD_HASH(): string { return this.getRequiredConfig('PASSWORD_HASH'); }

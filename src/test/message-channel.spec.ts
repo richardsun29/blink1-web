@@ -6,6 +6,10 @@ import MessageReceiver from '../util/message-receiver';
 import MessageSender from '../util/message-sender';
 
 describe('Message Channel', () => {
+  beforeEach(() => {
+    process.env['PUSHER_CHANNEL'] = 'testchannel';
+  });
+
   afterEach(() => {
   });
 
