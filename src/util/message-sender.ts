@@ -14,22 +14,24 @@ export default class MessageSender {
     this.pusherServer.trigger(Config.PUSHER_BLINK_CHANNEL, eventName, data);
   }
 
-  public subscriberConnected(callback: (isConnected: boolean) => void): void {
-    this.pusherServer.get({
-      path: `/channels/${Config.PUSHER_BLINK_CHANNEL}`,
-      params: {},
-    }, (err, req, res) => {
-      if (err) {
-        callback(false);
-        return;
-      }
-      if (res.statusCode === 200) {
-        const result = JSON.parse(res.body);
-        callback(result.occupied);
-      } else {
-        console.error(err);
-        callback(false);
-      }
+  public isSubscriberConnected(): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.pusherServer.get({
+        path: `/channels/${Config.PUSHER_BLINK_CHANNEL}`,
+        params: {},
+      }, (err, req, res) => {
+        if (err) {
+          resolve(false);
+        } else {
+          if (res.statusCode === 200) {
+            const result = JSON.parse(res.body);
+            resolve(result.occupied);
+          } else {
+            resolve(false);
+          }
+        }
+      });
     });
   }
+
 }
