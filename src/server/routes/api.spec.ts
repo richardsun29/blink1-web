@@ -11,6 +11,7 @@ import {
 
 import Factory from '../../util/factory';
 import MessageSender from '../../util/message-sender';
+import sleep from '../../util/sleep';
 import api from './api';
 
 describe('/api', () => {
@@ -29,87 +30,92 @@ describe('/api', () => {
     app.use(api);
   });
 
-  describe('/blink', () => {
-
-    describe('input validation', () => {
-      it('should fail gracefully with no message', (done) => {
-        const data: any = null;
-        request(app).post('/blink').send(data)
-          .expect(400)
-          .end(done);
-      });
-
-      it('should fail gracefully with no message type', (done) => {
-        const data: any = {};
-        request(app).post('/blink').send(data)
-          .expect(400)
-          .end(done);
-      });
-
-      it('should fail gracefully with invalid message type', (done) => {
-        const data: any = {type: 'bad type'};
-        request(app).post('/blink').send(data)
-          .expect(400)
-          .end(done);
-      });
-
-      it('should fail gracefully with missing message args', (done) => {
-        const data: any = {type: MessageType.BlinkSetColor, color: null};
-        request(app).post('/blink').send(data)
-          .expect(400)
-          .end(done);
-      });
-
-      it('should fail gracefully with invalid message args', (done) => {
-        const data: any = {
-          type: MessageType.BlinkSetColor,
-          color: '#12345z',
-        };
-        request(app).post('/blink').send(data)
-          .expect(400)
-          .end(done);
-      });
-    });
-
-    it('should succeed with BlinkOff message', (done) => {
-      const data = new BlinkOffMessage();
-      request(app).post('/blink').send(data)
-        .expect(200)
-        .end(done);
-    });
-
-    it('should succeed with BlinkSetColor message', (done) => {
-      const data = new BlinkSetColorMessage('#ee8800');
-      request(app).post('/blink').send(data)
-        .expect(200)
-        .end(done);
-    });
+  afterEach(() => {
+    mockMessageSender.trigger.resetHistory();
+    mockMessageSender.isSubscriberConnected.resetHistory();
   });
 
   describe('MessageSender integration', () => {
 
-    it('creates message sender once', (done) => {
+    it('creates message sender once', async () => {
       const data = new BlinkOffMessage();
-      request(app).post('/blink').send(data).end(() => {
-        request(app).post('/blink').send(data).end(done);
+      await request(app).post('/blink').send(data).expect(200);
+      await request(app).post('/blink').send(data).expect(200);
+    });
+
+    it('sends the message', async () => {
+      const data = new BlinkOffMessage();
+      await request(app).post('/blink').send(data).expect(200);
+      assert.strictEqual(mockMessageSender.trigger.callCount, 1);
+    });
+  });
+
+  describe('/blink', () => {
+
+    describe('input validation', () => {
+      it('should fail gracefully with no message', async () => {
+        const data: any = null;
+        await request(app).post('/blink').send(data).expect(400);
+      });
+
+      it('should fail gracefully with no message type', async () => {
+        const data: any = {};
+        await request(app).post('/blink').send(data).expect(400);
+      });
+
+      it('should fail gracefully with invalid message type', async () => {
+        const data: any = {type: 'bad type'};
+        await request(app).post('/blink').send(data).expect(400);
+      });
+
+      it('should fail gracefully with missing message args', async () => {
+        const data: any = {type: MessageType.BlinkSetColor, color: null};
+        await request(app).post('/blink').send(data).expect(400);
+      });
+
+      it('should fail gracefully with invalid message args', async () => {
+        const data: any = {
+          type: MessageType.BlinkSetColor,
+          color: '#12345z',
+        };
+        await request(app).post('/blink').send(data).expect(400);
       });
     });
 
-    it('sends the message', (done) => {
-      mockMessageSender.trigger.resetHistory();
-
+    it('should succeed with BlinkOff message', async () => {
       const data = new BlinkOffMessage();
-      request(app).post('/blink')
-        .send(data)
-        .expect(200)
-        .end((err, res) => {
-          if (err) {
-            done(err);
-          }
-          assert.strictEqual(mockMessageSender.trigger.callCount, 1);
-          done();
-        });
+      await request(app).post('/blink').send(data).expect(200);
     });
+
+    it('should succeed with BlinkSetColor message', async () => {
+      const data = new BlinkSetColorMessage('#ee8800');
+      await request(app).post('/blink').send(data).expect(200);
+    });
+  });
+
+  describe('/status', () => {
+    it('should respond with the connection status - true', async () => {
+      mockMessageSender.isSubscriberConnected.returns(true);
+      const res = await request(app).get('/status').expect(200);
+      assert.strictEqual(res.body.isConnected, true);
+      assert.strictEqual(mockMessageSender.isSubscriberConnected.callCount, 1);
+    });
+
+    it('should respond with the connection status - false', async () => {
+      mockMessageSender.isSubscriberConnected.returns(false);
+      const res = await request(app).get('/status').expect(200);
+      assert.strictEqual(res.body.isConnected, false);
+      assert.strictEqual(mockMessageSender.isSubscriberConnected.callCount, 1);
+    });
+
+    /* don't run slow test
+    it('should gracefully handle timeout', async () => {
+      mockMessageSender.isSubscriberConnected.callsFake(() => sleep(3000, true));
+      const res = await request(app).get('/status').expect(200);
+      assert.strictEqual(res.body.isConnected, false);
+      assert.strictEqual(mockMessageSender.isSubscriberConnected.callCount, 1);
+    }).timeout(5000);
+    */
   });
 
 });

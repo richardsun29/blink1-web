@@ -6,7 +6,6 @@ import PusherServer from 'pusher';
 import Config from './config';
 import Factory from './factory';
 import MessageSender from './message-sender';
-import { Message } from '../types/message';
 
 describe('MessageSender', () => {
   let mockFactory: sinon.SinonMock;

@@ -38,21 +38,20 @@ describe('Login', () => {
   function checkResponse(expectedPage: Page, done: Mocha.Done): request.CallbackHandler {
     return (err, res) => {
       if (err) {
-        done(err);
-      } else {
-        switch (expectedPage) {
-          case Page.Main:
-            assert.strictEqual(res.text, fakeMainPage);
-            break;
-          case Page.Login:
-            assert.notStrictEqual(res.text.indexOf('<h1>Login</h1>'), -1);
-            break;
-          case Page.Api:
-            assert.strictEqual(res.text, fakeApiResult);
-            break;
-        }
-        done();
+        return done(err);
       }
+      switch (expectedPage) {
+        case Page.Main:
+          assert.strictEqual(res.text, fakeMainPage);
+          break;
+        case Page.Login:
+          assert.notStrictEqual(res.text.indexOf('<h1>Login</h1>'), -1);
+          break;
+        case Page.Api:
+          assert.strictEqual(res.text, fakeApiResult);
+          break;
+      }
+      done();
     };
   }
 
@@ -110,7 +109,7 @@ describe('Login', () => {
         .expect('Location', '/')
         .end((err, res) => {
           if (err) {
-            done(err);
+            return done(err);
           }
           agent.get('/')
             .expect(200)
@@ -123,7 +122,7 @@ describe('Login', () => {
         .send({ password })
         .end((err, res) => {
           if (err) {
-            done(err);
+            return done(err);
           }
 
           const cookie: string = res.header['set-cookie'][0];
@@ -154,7 +153,7 @@ describe('Login', () => {
         .expect('Location', '/')
         .end((err, res) => {
           if (err) {
-            done(err);
+            return done(err);
           }
           agent.post('/api')
             .expect(200)
