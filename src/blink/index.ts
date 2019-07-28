@@ -1,3 +1,4 @@
+import Factory from '../util/factory';
 import MessageReceiver from '../util/message-receiver';
 import Blink from './blink';
 
@@ -6,7 +7,7 @@ class BlinkApp {
   private blink: Blink;
 
   constructor() {
-    this.messageReceiver = new MessageReceiver();
+    this.messageReceiver = Factory.createMessageReceiver();
     this.blink = new Blink();
   }
 

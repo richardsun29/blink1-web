@@ -6,21 +6,29 @@ import {
   BlinkSetColorMessage,
   Message,
   MessageType,
- } from '../types/message';
- import Config from '../util/config';
- import Factory from '../util/factory';
+} from '../types/message';
+import Config from '../util/config';
+import Factory from '../util/factory';
+
+type StatusCallback = () => void;
 
 export default class Blink {
 
-  constructor() {
+  // @ts-ignore
+  private blink1: Blink1;
+
+  private onSucess?: StatusCallback;
+  private onError?: StatusCallback;
+
+  constructor(onSuccess?: StatusCallback, onError?: StatusCallback) {
+    this.onSucess = onSuccess;
+    this.onError = onError;
     try {
       this.blink1 = Factory.createBlink1();
     } catch (e) {
       console.error(e.message);
     }
   }
-  // @ts-ignore
-  private blink1: Blink1;
 
   // turn off blink if no commands are sent
   private handleTimeout = _.debounce(() => {
@@ -60,18 +68,35 @@ export default class Blink {
     });
   }
 
-  // try to reconnect to device if fails
   private run(callback: () => void): void {
+    let succeeded: boolean = false;
     try {
       callback();
+      succeeded = true;
     } catch (e) {
+      // try to reconnect to device if fails
       try {
         this.blink1 = Factory.createBlink1();
         callback();
+        succeeded = true;
       } catch (err) {
+        // give up
         console.error(err.message);
+        succeeded = false;
       }
     }
+
+    // report results
+    if (succeeded) {
+      if (this.onSucess) {
+        this.onSucess();
+      }
+    } else {
+      if (this.onError) {
+        this.onError();
+      }
+    }
+
     this.handleTimeout();
   }
 }

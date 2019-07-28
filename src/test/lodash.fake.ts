@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 
-// add new jquery methods in both places
+// add new lodash methods in both places
 const fakeMethods: string[] = [
   'throttle',
   'isObject',

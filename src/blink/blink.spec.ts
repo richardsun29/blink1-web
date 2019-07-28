@@ -46,6 +46,42 @@ describe('Blink', () => {
     });
   });
 
+  describe('#StatusCallback', () => {
+    const message = new BlinkOffMessage();
+    const onSuccess: sinon.SinonSpy = sinon.spy();
+    const onError: sinon.SinonSpy = sinon.spy();
+
+    afterEach(() => {
+      onSuccess.resetHistory();
+      onError.resetHistory();
+    });
+
+    it('should report success on success', () => {
+      mockFactory.expects('createBlink1').returns(mockBlink1);
+      blink = new Blink(onSuccess, onError);
+      blink.processMessage(message);
+      assert.strictEqual(onSuccess.callCount, 1);
+      assert.strictEqual(onError.callCount, 0);
+    });
+
+    it('should report success on success after retry', () => {
+      mockFactory.expects('createBlink1').throws();
+      mockFactory.expects('createBlink1').returns(mockBlink1);
+      blink = new Blink(onSuccess, onError);
+      blink.processMessage(message);
+      assert.strictEqual(onSuccess.callCount, 1);
+      assert.strictEqual(onError.callCount, 0);
+    });
+
+    it('should report error on failure', () => {
+      mockFactory.expects('createBlink1').twice().throws();
+      blink = new Blink(onSuccess, onError);
+      blink.processMessage(message);
+      assert.strictEqual(onSuccess.callCount, 0);
+      assert.strictEqual(onError.callCount, 1);
+    });
+  });
+
   describe('#off', () => {
     const offMessage = new BlinkOffMessage();
 
