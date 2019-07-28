@@ -4,6 +4,7 @@ import tinycolor from 'tinycolor2';
 import Blink1 from 'node-blink1';
 import {
   BlinkSetColorMessage,
+  isValidMessage,
   Message,
   MessageType,
 } from '../types/message';
@@ -38,6 +39,13 @@ export default class Blink {
   }, Config.BLINK_TIMEOUT * 1000);
 
   public processMessage(message: Message): void {
+    if (!isValidMessage(message)) {
+      if (this.onError) {
+        this.onError();
+      }
+      return;
+    }
+
     switch (message.type) {
       case MessageType.BlinkOff:
         this.off();

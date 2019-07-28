@@ -6,6 +6,7 @@ import tinycolor from 'tinycolor2';
 import {
   BlinkOffMessage,
   BlinkSetColorMessage,
+  Message,
   MessageType,
 } from '../types/message';
 import Config from '../util/config';
@@ -77,6 +78,15 @@ describe('Blink', () => {
       mockFactory.expects('createBlink1').twice().throws();
       blink = new Blink(onSuccess, onError);
       blink.processMessage(message);
+      assert.strictEqual(onSuccess.callCount, 0);
+      assert.strictEqual(onError.callCount, 1);
+    });
+
+    it('should report error on invalid message', () => {
+      const invalidMessage: Message = { type: MessageType.None };
+      mockFactory.expects('createBlink1').returns(mockBlink1);
+      blink = new Blink(onSuccess, onError);
+      blink.processMessage(invalidMessage);
       assert.strictEqual(onSuccess.callCount, 0);
       assert.strictEqual(onError.callCount, 1);
     });
