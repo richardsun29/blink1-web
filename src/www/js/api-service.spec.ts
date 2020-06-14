@@ -38,6 +38,7 @@ describe('ApiService', () => {
 
       const message = JSON.parse(settings.data);
       assert(isValidMessage(message));
+      assert(BlinkSetColorMessage.isValid(message));
       assert.strictEqual(message.type, MessageType.BlinkSetColor);
       assert(tinycolor.equals(color, tinycolor(message.color)));
     });
